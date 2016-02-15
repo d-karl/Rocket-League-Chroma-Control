@@ -13,10 +13,12 @@
 AttachToRLLog::AttachToRLLog(QObject* parent) : QObject(parent)
 {
     threadFound = false;
+    consoleConnected = false;
 }
 
 void AttachToRLLog::startUp() {
-    tryConsoleConnection();
+    QTimer::singleShot(1000, Qt::CoarseTimer, this, SLOT(tryConsoleConnection()));
+
 }
 
 AttachToRLLog::~AttachToRLLog()
@@ -28,7 +30,6 @@ AttachToRLLog::~AttachToRLLog()
 void AttachToRLLog::tryConsoleConnection()
 {
     if (!consoleConnected) {
-        std::cout << "AttachToRLLog::tryConsoleConnection" << std::endl;
         consoleConnected = false;
         RLProcID = searchForProcess(RL);
         linesRead = 0;
