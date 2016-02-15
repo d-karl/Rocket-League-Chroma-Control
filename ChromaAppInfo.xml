@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<application>
+    <title>Rocket League Chroma Control</title> <!-- Title of your application -->
+    <description>Makes Blackwidow Chroma react to Rocket League ingame events, such as: countdown to start, goal</description> <!-- Brief description of your application -->
+    <author name="dkarl" contact="https://github.com/d-karl/Rocket-League-Chroma-Control"/> <!-- Contact details -->
+    <device_supported keyboard="1" mouse="0" headset="0" mousemat="0" keypad="0"/> <!-- Device supported by the application -->
+	<category game="0"> <!-- App category. Default is an app. If the app is a game, set it to "1" -->
+</application>
