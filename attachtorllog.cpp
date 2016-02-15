@@ -37,7 +37,7 @@ void AttachToRLLog::tryConsoleConnection()
             if (AttachConsole(RLProcID))
             {
                     hConsole = CreateFile(L"CONOUT$",
-                        GENERIC_READ,
+                        GENERIC_READ | GENERIC_WRITE,
                         0, 0, OPEN_EXISTING, 0, 0);
                     consoleConnected = true;
                     emit rocketLeagueRunning(true);
