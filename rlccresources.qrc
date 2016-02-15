@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/images/MainWindow">
+        <file>Resources/12 - Champion (256x256).png</file>
+        <file>Resources/btn_donate_pp_142x27.png</file>
+    </qresource>
+</RCC>
