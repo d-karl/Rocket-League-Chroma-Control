@@ -8,6 +8,9 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+#set windows icon to razer from their sdk for now
+RC_FILE = Razer.rc
+
 TARGET = RocketLeagueChromaControl
 TEMPLATE = app
 
