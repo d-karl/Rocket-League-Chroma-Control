@@ -122,7 +122,7 @@ void RLLogParser::parseLine(const std::string & line) {
              }
      }
 
-    // GameEvent: Init GameEvent_SoccarSplitscreen
+    // player playing offline splitscreen
     if (!someThingFound) {
         searchResult = line.find("GameEvent: Init GameEvent_SoccarSplitscreen", 0);
              if (searchResult != string::npos) {
@@ -131,6 +131,17 @@ void RLLogParser::parseLine(const std::string & line) {
                  emit newState(RL_Playing);
              }
      }
+
+    // player playing online
+    if (!someThingFound) {
+        searchResult = line.find("GameEvent: GotoGameState GameEvent_Soccar GameEvent_Soccar_", 0);
+             if (searchResult != string::npos) {
+                 someThingFound = true;
+                 std::cout << "Playing" << std::endl;
+                 emit newState(RL_Playing);
+             }
+     }
+
 
     // GameEvent: Init GameEvent_Tutorial
     if (!someThingFound) {

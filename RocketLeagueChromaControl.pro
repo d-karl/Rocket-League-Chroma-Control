@@ -15,15 +15,7 @@ TARGET = RocketLeagueChromaControl
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    chromacontrol.cpp \
-    rllogparser.cpp \
-    attachtorllog.cpp \
-    debugwindow.cpp \
-    maincontroller.cpp \
-    perlinnoise.cpp \
-    chromaanimationutils.cpp \
+SOURCES += \
     libnoise/model/cylinder.cpp \
     libnoise/model/line.cpp \
     libnoise/model/plane.cpp \
@@ -60,20 +52,18 @@ SOURCES += main.cpp\
     libnoise/win32/dllmain.cpp \
     libnoise/latlon.cpp \
     libnoise/noisegen.cpp \
-    noiseutils.cpp
+    attachtorllog.cpp \
+    chromaanimationutils.cpp \
+    chromacontrol.cpp \
+    debugwindow.cpp \
+    main.cpp \
+    maincontroller.cpp \
+    mainwindow.cpp \
+    noiseutils.cpp \
+    rllogparser.cpp
 
-HEADERS  += mainwindow.h \
-    RzChromaSDKDefines.h \
-    RzChromaSDKTypes.h \
-    RzErrors.h \
-    chromacontrol.h \
-    rllogparser.h \
-    attachtorllog.h \
-    debugwindow.h \
-    maincontroller.h \
-    perlinnoise.h \
-    chromaanimationutils.h \
-    structcolorrgb.h \
+
+HEADERS  += \
     libnoise/model/cylinder.h \
     libnoise/model/line.h \
     libnoise/model/model.h \
@@ -119,7 +109,19 @@ HEADERS  += mainwindow.h \
     libnoise/noise.h \
     libnoise/noisegen.h \
     libnoise/vectortable.h \
-    noiseutils.h
+    attachtorllog.h \
+    chromaanimationutils.h \
+    chromacontrol.h \
+    debugwindow.h \
+    maincontroller.h \
+    mainwindow.h \
+    noiseutils.h \
+    rllogparser.h \
+    RzChromaSDKDefines.h \
+    RzChromaSDKTypes.h \
+    RzErrors.h \
+    structcolorrgb.h
+
 
 FORMS    += mainwindow.ui \
     debugwindow.ui

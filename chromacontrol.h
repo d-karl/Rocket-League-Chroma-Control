@@ -6,7 +6,6 @@
 #include <QObject>
 #include <windows.h>
 #include <QTimer>
-#include "perlinnoise.h"
 #include "RzChromaSDKTypes.h"
 #include <libnoise/noise.h>
 #include "noiseutils.h"
