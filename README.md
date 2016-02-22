@@ -24,7 +24,7 @@ If for some reason your Rocket League installation is not entered in your regist
 4. You can now start Rocket League from Steam and it should be detected by RLCC.
 
 ##Download
-If you just got here and don't know this whole github thing, a zip download is available by clicking on "releases" on the navbar on top.
+If you just got here and don't know this whole github thing, a zip download is available by clicking on "releases" on the navbar on top. Or follow this link: https://github.com/d-karl/Rocket-League-Chroma-Control/releases
 
 ##Licensing
 QT version 5.5 used under LGPL v3.
