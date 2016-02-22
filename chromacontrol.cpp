@@ -237,6 +237,8 @@ void ChromaControl::updateChroma() {
         switch(activeState) {
         case AS_Initial:
         {
+            pn_left.SetFrequency(1);
+            pn_right.SetFrequency(1);
             // display white pulsing animation
             float animationTimeMS = 4000;
             double sineStep = 2 * PI * ((float) animationMS / animationTimeMS);
@@ -260,6 +262,8 @@ void ChromaControl::updateChroma() {
         }
         case AS_MainMenu:
         {
+            pn_left.SetFrequency(1);
+            pn_right.SetFrequency(1);
             ChromaSDK::Keyboard::CUSTOM_EFFECT_TYPE Effect = {};
             generateBlueOrangeFlag(Effect);
             CreateKeyboardEffect(ChromaSDK::Keyboard::CHROMA_CUSTOM, &Effect, &newFrame);
@@ -268,6 +272,8 @@ void ChromaControl::updateChroma() {
         }
         case AS_CountDown:
         {
+            pn_left.SetFrequency(1);
+            pn_right.SetFrequency(1);
             int framesSinceCDStart = animationStep - countDownStart;
             ChromaSDK::Keyboard::CUSTOM_EFFECT_TYPE Effect = {};
             generateBlueOrangeFlag(Effect);
@@ -305,6 +311,8 @@ void ChromaControl::updateChroma() {
         }
         case AS_CountDownTut:
         {
+            pn_left.SetFrequency(1);
+            pn_right.SetFrequency(1);
             int framesSinceCDStart = animationStep - countDownStart;
             ChromaSDK::Keyboard::CUSTOM_EFFECT_TYPE Effect = {};
             generateBlueOrangeFlag(Effect);
