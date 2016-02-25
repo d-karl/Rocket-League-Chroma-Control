@@ -20,10 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->LaunchButon, SIGNAL(clicked()), this, SLOT(launchButtonPressed()));
     connect(ui->DonationButton, SIGNAL(clicked()), this, SLOT(donationButtonPressed()));
     connect(mainController->attachWorker, SIGNAL(rocketLeagueRunning(bool)), this, SLOT(rocketLeagueStart(bool)));
-
+    connect(ui->helpButton, SIGNAL(clicked()), this, SLOT(helpButtonPressed()));
 }
 
 std::wstring donationURL = L"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NTYNPG42JQJ3G";
+std::wstring threadURL = L"https://insider.razerzone.com/index.php?threads/rocket-league-chroma-control.11637/";
 
 void MainWindow::rocketLeagueStart(bool start) {
     if (start) {
@@ -42,12 +43,16 @@ void MainWindow::launchButtonPressed() {
     wstring RLFolder = ReadRegValue(HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 252950", L"InstallLocation");
     RLFolder.append(L"\\Binaries\\Win32\\RocketLeague.exe");
     std::wcout << "RL exe: " << RLFolder << std::endl;
-    if (!CreateProcess(RLFolder.c_str(), NULL, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
+    if (!CreateProcess(RLFolder.c_str(), L"RocketLeague.exe -log", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
     {
        std::wstring error = L"Could not start Rocket League, tried path from your registry: ";
        error.append(RLFolder);
        MessageBox(0, error.c_str(), L"Whoops...!", MB_OK);
     }
+}
+
+void MainWindow::helpButtonPressed() {
+    ShellExecute(0, 0, threadURL.c_str(), 0, 0 , SW_SHOW );
 }
 
 void MainWindow::donationButtonPressed() {

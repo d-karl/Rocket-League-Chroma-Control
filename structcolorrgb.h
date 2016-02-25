@@ -17,5 +17,7 @@ const colorRGB red {255, 0, 0};
 
 const colorRGB goldIsh {253, 189, 75};
 
+const colorRGB white {255, 255, 255};
+
 #endif // STRUCTCOLORRGB
 

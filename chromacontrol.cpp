@@ -335,57 +335,43 @@ void ChromaControl::updateChroma() {
             int frameInGo = animationStep - goStart;
             ChromaSDK::Keyboard::CUSTOM_EFFECT_TYPE Effect = {};
             generateBlueOrangeFlag(Effect);
-            double headsize = 4.0;
-            double shaftHeight = 2.0;
-            double shaftWidth = 2.5;
-            double progress = easeInOutQuad(frameInGo, 0.0, 9.0 + (headsize + shaftHeight), 30);
-            progress = 5.0 + (headsize + shaftHeight) -progress - (headsize + shaftHeight);
+            double angle = -0.8;
+            double strokeWidth = 4;
+            double progress = easeInOutQuad(frameInGo, 0.0, 22.0 + strokeWidth, 20);
             generateBlueOrangeFlag(Effect);
 
             ChromaSDK::Keyboard::CUSTOM_EFFECT_TYPE Mask = {};
-            double arrowMidPointX = 7.0;
+            double midPointVirtual = ChromaSDK::Keyboard::MAX_ROW/2 + 0.5;
 
-            for(UINT row=std::max(0.0, progress -1); row<std::min((double) ChromaSDK::Keyboard::MAX_ROW ,progress -1 + headsize); row++)
+            for(UINT row=0; row<ChromaSDK::Keyboard::MAX_ROW; row++)
             {
-                double arrowHeadWidthInRow = std::max(0.0, row - progress);
-                for(UINT col=arrowMidPointX - arrowHeadWidthInRow; col<arrowMidPointX + arrowHeadWidthInRow; col++)
-                {
-                    double cornerFactor = 1.0 - (pow(((arrowHeadWidthInRow - (int) arrowHeadWidthInRow)),2.0)/2.0);
-                    if (arrowHeadWidthInRow < 1.0) {
-                        // in topmost quadrant
-                        Mask.Color[row][col] = RGB(goldIsh.r * arrowHeadWidthInRow, goldIsh.b * cornerFactor, goldIsh.g * cornerFactor);
-                    } else {
-                        if (col == arrowMidPointX - arrowHeadWidthInRow || col == arrowMidPointX + arrowHeadWidthInRow - 1) {
-                            // leftmost or rightmost quadrant
-                            Mask.Color[row][col] = RGB(goldIsh.r * arrowHeadWidthInRow, goldIsh.b * cornerFactor, goldIsh.g * cornerFactor);
+                double outerPoint = fabs(row-midPointVirtual) * angle - angle/2 + progress;
+                double factor = outerPoint;
+                int lowerbound = floor(factor);
+                if (lowerbound >= -2.0) {
+                    int upperbound = std::min(22, lowerbound + (int)strokeWidth);
+                    for(UINT col=std::max(0,lowerbound); col<upperbound; col++)
+                    {
+                        double rowFactor;
+                        if (col == lowerbound || col == 0) {
+                            rowFactor = 1- (factor - lowerbound);
+                        } else if (col == upperbound - 1) {
+                            rowFactor = (factor - lowerbound);
                         } else {
-                            // middle quadrant
-                            Mask.Color[row][col] = RGB(goldIsh.r, goldIsh.g, goldIsh.b);
+                            rowFactor = 1.0;
                         }
+                        if (col == 7);
 
-                    }
-                  //  Mask.Color[row][col] = grayColor;
-                }
-            }
-            for(UINT row=std::max(0.0, progress -1 + headsize); row<std::min((double) ChromaSDK::Keyboard::MAX_ROW ,progress -1 + 2*headsize + shaftHeight); row++)
-            {
-                double arrowHeadWidthInRow = std::max(0.0, row - progress);
-                for(UINT col=arrowMidPointX - shaftWidth/2; col<arrowMidPointX + shaftWidth/2; col++)
-                {
-                    double cornerFactor = arrowMidPointX - shaftWidth/2 - col;
-                    if (col == arrowMidPointX - shaftWidth/2 || col == col<arrowMidPointX + shaftWidth/2 - 1) {
-                        // leftmost or rightmost quadrant
-                        Mask.Color[row][col] = RGB(goldIsh.r * arrowHeadWidthInRow, goldIsh.b * cornerFactor, goldIsh.g * cornerFactor);
-                    } else {
-                        // middle quadrant
-                        Mask.Color[row][col] = RGB(goldIsh.r, goldIsh.g, goldIsh.b);
+                        Mask.Color[row][col] = RGB(goldIsh.r * rowFactor, goldIsh.g * rowFactor, goldIsh.b * rowFactor);
                     }
 
                 }
+
             }
+
             overlayEffect1With2(Effect, Mask);
             displayAndAdvanceFrame(Effect);
-            if (frameInGo > 30) {
+            if (frameInGo > 20) {
                 activeState = AS_MainMenu;
             }
             break;

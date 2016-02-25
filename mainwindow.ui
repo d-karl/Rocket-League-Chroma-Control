@@ -7,8 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>270</width>
-    <height>391</height>
+    <height>418</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>270</width>
+    <height>418</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>270</width>
+    <height>418</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Rocket League Chroma Control</string>
@@ -129,7 +147,7 @@
       <x>0</x>
       <y>260</y>
       <width>271</width>
-      <height>61</height>
+      <height>91</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -156,13 +174,20 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="helpButton">
+       <property name="text">
+        <string>Help / About / Info</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QPushButton" name="DonationButton">
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>350</y>
+      <y>380</y>
       <width>151</width>
       <height>31</height>
      </rect>
@@ -191,13 +216,29 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>350</y>
+      <y>380</y>
       <width>91</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>Buy me a beer?</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>359</y>
+      <width>251</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Version: 1.0.5 - CW1</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
