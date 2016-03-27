@@ -5,8 +5,11 @@
 #include <QtCore>
 #include <iostream>
 #include <string>
+#include <QFileDialog>
 
 using namespace std;
+
+QSettings settings(QSettings::IniFormat, QSettings::UserScope, "RLCC", "RLCC");
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,6 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->DonationButton, SIGNAL(clicked()), this, SLOT(donationButtonPressed()));
     connect(mainController->attachWorker, SIGNAL(rocketLeagueRunning(bool)), this, SLOT(rocketLeagueStart(bool)));
     connect(ui->helpButton, SIGNAL(clicked()), this, SLOT(helpButtonPressed()));
+    connect(ui->setPathButton, SIGNAL(clicked()), this, SLOT(setPathButtonPressed()));
+
+    QVariant pathVar = settings.value("RLPath");
+    if (!pathVar.isNull()) {
+        ui->LaunchButon->setEnabled(true);
+    }
+ //   QString string = "test";
+ //   std::wstring testerino = string.toStdWString();
+
 }
 
 std::wstring donationURL = L"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NTYNPG42JQJ3G";
@@ -40,15 +52,39 @@ void MainWindow::launchButtonPressed() {
     si.cb = sizeof(si);
     ZeroMemory( &pi, sizeof(pi) );
 
-    wstring RLFolder = ReadRegValue(HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 252950", L"InstallLocation");
-    RLFolder.append(L"\\Binaries\\Win32\\RocketLeague.exe");
-    std::wcout << "RL exe: " << RLFolder << std::endl;
-    if (!CreateProcess(RLFolder.c_str(), L"RocketLeague.exe -log", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
-    {
-       std::wstring error = L"Could not start Rocket League, tried path from your registry: ";
-       error.append(RLFolder);
-       MessageBox(0, error.c_str(), L"Whoops...!", MB_OK);
+    QVariant path = settings.value("RLPath");
+    if (!path.isNull()) {
+        QString pathFromIni = path.toString();
+        pathFromIni.replace(QString("/"), QString("\\"));
+        wstring RLFolder = pathFromIni.toStdWString();
+        if (!CreateProcess(RLFolder.c_str(), L"RocketLeague.exe -log", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
+        {
+           std::wstring error = L"Could not start Rocket League, tried path you set for RocketLeague.exe: ";
+           error.append(RLFolder);
+           MessageBox(0, error.c_str(), L"Whoops...!", MB_OK);
+        }
+    } else {
+         MessageBox(0, L"No path set! Please use the \"Set RL Path\" button before hitting launch.", L"Whoops...!", MB_OK);
     }
+
+}
+
+void MainWindow::setPathButtonPressed() {
+    wstring RLFolder = ReadRegValue(HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 252950", L"InstallLocation");
+    RLFolder.append(L"\\Binaries\\Win32");
+    QString RLFolderW = QString::fromStdWString(RLFolder);
+    QString RLFileName = QFileDialog::getOpenFileName(this, tr("Locate RocketLeague.exe"),
+                                                    RLFolderW,
+                                                    tr("RocketLeague.exe (RocketLeague.exe)"));
+    if (RLFileName.isNull()) {
+        MessageBox(0, L"RLCC cannot launch RL until you locate RocketLeague.exe\n\n"
+                      "Normally, it is located inside your steam directory: \"steamapps\\common\\rocketleague\\Binaries\\Win32\"\n\n"
+                      "If you cannot find it try Windows search", L"Cannot launch RL", MB_OK);
+    } else {
+        settings.setValue("RLPath", RLFileName);
+        ui->LaunchButon->setEnabled(true);
+    }
+
 }
 
 void MainWindow::helpButtonPressed() {

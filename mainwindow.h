@@ -32,6 +32,7 @@ public slots:
     void donationButtonPressed();
     void rocketLeagueStart(bool);
     void helpButtonPressed();
+    void setPathButtonPressed();
 };
 
 #endif // MAINWINDOW_H
