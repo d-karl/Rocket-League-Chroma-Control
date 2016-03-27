@@ -245,7 +245,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Version: 1.0.6 - CW2</string>
+     <string>Version: 1.0.7 - CW2</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

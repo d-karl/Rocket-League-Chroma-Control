@@ -24,7 +24,6 @@ public:
 private:
     Ui::MainWindow *ui;
     MainController* mainController;
-    wstring ReadRegValue(HKEY root, wstring key, wstring name);
 
 
 public slots:

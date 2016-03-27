@@ -70,11 +70,8 @@ void MainWindow::launchButtonPressed() {
 }
 
 void MainWindow::setPathButtonPressed() {
-    wstring RLFolder = ReadRegValue(HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 252950", L"InstallLocation");
-    RLFolder.append(L"\\Binaries\\Win32");
-    QString RLFolderW = QString::fromStdWString(RLFolder);
     QString RLFileName = QFileDialog::getOpenFileName(this, tr("Locate RocketLeague.exe"),
-                                                    RLFolderW,
+                                                    "/home",
                                                     tr("RocketLeague.exe (RocketLeague.exe)"));
     if (RLFileName.isNull()) {
         MessageBox(0, L"RLCC cannot launch RL until you locate RocketLeague.exe\n\n"
@@ -94,42 +91,6 @@ void MainWindow::helpButtonPressed() {
 void MainWindow::donationButtonPressed() {
     MessageBox(0, L"OMG! Wow! Thanks!\n(Seriously, glad you enjoy my little program, thanks for considering)", L"Wow!", MB_OK);
     ShellExecute(0, 0, donationURL.c_str(), 0, 0 , SW_SHOW );
-}
-
-wstring MainWindow::ReadRegValue(HKEY root, wstring key, wstring name)
-{
-    HKEY hKey;
-    if (RegOpenKeyEx(root, key.c_str(), 0, KEY_READ, &hKey) != ERROR_SUCCESS)
-        throw "Could not open registry key";
-
-    DWORD type;
-    DWORD cbData;
-    if (RegQueryValueEx(hKey, name.c_str(), NULL, &type, NULL, &cbData) != ERROR_SUCCESS)
-    {
-        RegCloseKey(hKey);
-        throw "Could not read registry value";
-    }
-
-    if (type != REG_SZ)
-    {
-        RegCloseKey(hKey);
-        throw "Incorrect registry value type";
-    }
-
-    wstring value(cbData/sizeof(wchar_t), L'\0');
-    if (RegQueryValueEx(hKey, name.c_str(), NULL, NULL, reinterpret_cast<LPBYTE>(&value[0]), &cbData) != ERROR_SUCCESS)
-    {
-        RegCloseKey(hKey);
-        throw "Could not read registry value";
-    }
-
-    RegCloseKey(hKey);
-
-    size_t firstNull = value.find_first_of(L'\0');
-    if (firstNull != string::npos)
-        value.resize(firstNull);
-
-    return value;
 }
 
 MainWindow::~MainWindow()
