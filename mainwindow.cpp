@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->DonationButton, SIGNAL(clicked()), this, SLOT(donationButtonPressed()));
     connect(mainController->attachWorker, SIGNAL(rocketLeagueRunning(bool)), this, SLOT(rocketLeagueStart(bool)));
     connect(ui->helpButton, SIGNAL(clicked()), this, SLOT(helpButtonPressed()));
-    connect(ui->setPathButton, SIGNAL(clicked()), this, SLOT(setPathButtonPressed()));
 
     QVariant pathVar = settings.value("RLPath");
     if (!pathVar.isNull()) {
@@ -52,20 +51,54 @@ void MainWindow::launchButtonPressed() {
     si.cb = sizeof(si);
     ZeroMemory( &pi, sizeof(pi) );
 
-    QVariant path = settings.value("RLPath");
-    if (!path.isNull()) {
-        QString pathFromIni = path.toString();
-        pathFromIni.replace(QString("/"), QString("\\"));
-        wstring RLFolder = pathFromIni.toStdWString();
-        if (!CreateProcess(RLFolder.c_str(), L"RocketLeague.exe -log", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
+    QSettings m("HKEY_CURRENT_USER\\SOFTWARE\\Valve\\Steam\\",
+                QSettings::NativeFormat);
+    QString steamPath = QString(m.value("SteamExe").toString());
+
+    QFileInfo yourFileInfo(steamPath);
+    QString correctedCasePath = yourFileInfo.absoluteFilePath ();
+
+    QStringList pathSplit = correctedCasePath.split("/");
+    QStringListIterator folderIterator(pathSplit);
+    QString drive = folderIterator.next();
+    QDir current(drive);
+
+    while (folderIterator.hasNext()) {
+        QString toLookfor = folderIterator.next();
+        QString correctCaseFolder;
+        QString subfolder;
+        QStringList subFolders = current.entryList();
+        foreach(subfolder, subFolders) {
+            if (QString::compare(subfolder, toLookfor, Qt::CaseInsensitive) == 0) {
+                correctCaseFolder = QString(subfolder);
+            }
+        }
+        QString currentPath(current.absolutePath());
+        currentPath.append("/");
+        current = QDir(currentPath + correctCaseFolder);
+
+
+    }
+    QString caseSensitiveSteamPath(current.absolutePath());
+    qDebug() << "case sensitive: " << caseSensitiveSteamPath;
+
+    //MessageBox(0, steamExe.toStdWString().c_str(), L"Cannot launch RL", MB_OK);
+
+    if (!caseSensitiveSteamPath.isNull()) {
+        caseSensitiveSteamPath.replace(QString("/"), QString("\\"));
+
+        wstring wSteamPath = caseSensitiveSteamPath.toStdWString();
+        if (!CreateProcess(wSteamPath.c_str(), L"Steam.exe -applaunch 252950 -log", NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
         {
-           std::wstring error = L"Could not start Rocket League, tried path you set for RocketLeague.exe: ";
-           error.append(RLFolder);
+           std::wstring error = L"Could not start Rocket League, looked for steam in ";
+           error.append(wSteamPath);
            MessageBox(0, error.c_str(), L"Whoops...!", MB_OK);
         }
     } else {
          MessageBox(0, L"No path set! Please use the \"Set RL Path\" button before hitting launch.", L"Whoops...!", MB_OK);
     }
+
+
 
 }
 
@@ -89,7 +122,7 @@ void MainWindow::helpButtonPressed() {
 }
 
 void MainWindow::donationButtonPressed() {
-    MessageBox(0, L"OMG! Wow! Thanks!\n(Seriously, glad you enjoy my little program, thanks for considering)", L"Wow!", MB_OK);
+    MessageBox(0, L"OMG! Wow! Thanks!\n(Seriously, glad you enjoy my program, thanks for considering)", L"Wow!", MB_OK);
     ShellExecute(0, 0, donationURL.c_str(), 0, 0 , SW_SHOW );
 }
 

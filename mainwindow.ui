@@ -178,13 +178,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="setPathButton">
-       <property name="text">
-        <string>Set RL Path</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="helpButton">
        <property name="text">
         <string>Help / About / Info</string>
@@ -245,7 +238,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Version: 1.0.7 - CW2</string>
+     <string>Version: 1.1 - CW3</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
